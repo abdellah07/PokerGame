@@ -1,7 +1,6 @@
-import Exceptions.NotAllowedValue;
+import Exceptions.NotAllowedValueException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class CardManager {
             for(int i = AllowedValues.getMinValueAllowed(); i<=AllowedValues.getMaxValueAllowed(); i++)
                 try {
                     deck.add(new Card(type,AllowedValues.getValue(i)));
-                }catch (NotAllowedValue e){
+                }catch (NotAllowedValueException e){
                     // il y'aura jamais d'exeption dans ce scope
                 }
     }
