@@ -1,5 +1,7 @@
 import Exceptions.NotAllowedValueException;
 
+import java.util.Arrays;
+
 /**
  * this class is used to represent all the possible values that can be given to a card
  * @author Abdellah NAJI
@@ -18,11 +20,23 @@ public class AllowedValues {
      * @return the string value
      * @throws NotAllowedValueException exception that represent that the value is not allowed
      */
-    public static String getValue(int number) throws NotAllowedValueException {
+    public static String getValue(int number) {
         if(number>=1 && number<=14)
             return allowedValues[number-1];
         else
-            throw new NotAllowedValueException();
+            return "";
+    }
+
+    public static int getIntValue(String value) {
+        for(int i = 1;i<=14;i++){
+            if(allowedValues[i].equals(value))
+                return i;
+        }
+        return 0;
+    }
+
+    public static boolean isAllowedValue(String Value){
+        return Arrays.asList(allowedValues).contains(Value);
     }
 
     public static int getMaxValueAllowed(){
