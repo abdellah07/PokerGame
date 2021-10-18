@@ -153,16 +153,19 @@ public class RunBlackJack {
             System.out.println();
             blackJack.start();
         }else {
-            int NBBOUCLE = 50000;
-            Player p[] = {new Bot("NAJI", "Abdellah", "abdellah@mail.com")
+            int NBBOUCLE = 100000;
+            Player ps[] = {new Bot("NAJI", "Abdellah", "abdellah@mail.com")
                     ,new Bot("KHERRAF", "Taha", "Taha@mail.com")
+                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")
+                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")
+                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")
                     ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")};
-            StatsCollector s = new StatsCollector(Arrays.asList(p));
+            StatsCollector s = new StatsCollector(Arrays.asList(ps));
             for (int i = 0; i < NBBOUCLE; i++) {
                 RunBlackJack blackJack = new RunBlackJack();
-                blackJack.addPlayer(p[0]);
-                blackJack.addPlayer(p[1]);
-                blackJack.addPlayer(p[2]);
+                for (Player p:ps) {
+                    blackJack.addPlayer(p);
+                }
                 System.out.println();
                 blackJack.initGame();
                 System.out.println();
