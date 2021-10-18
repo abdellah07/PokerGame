@@ -1,3 +1,6 @@
+package casino.player;
+
+import casino.cards.Card;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -13,9 +16,9 @@ public class Player {
 
     private Hand hand;
 
-    private List<Pair<Token,Integer>> tokens;
+    private int cash;
 
-    private List<Pair<Token,Integer>> tokensInTable;
+    private List<Pair<Token,Integer>> tokens;
 
     public Player(String firstName, String secondName, String email) {
         this.firstName = firstName;
@@ -23,19 +26,20 @@ public class Player {
         this.email = email;
         this.hand = new Hand();
         initialisationTokens();
-        initialisationTokensInTable();
     }
 
     private void initialisationTokens(){
         tokens = new ArrayList<>();
-        for (Token token: Token.values())
-            tokens.add(Pair.of(token,0));
+        int copyOfCash = cash;
+        for (Token token: Token.values()) {
+            int tokenNumber = copyOfCash/token.getPrice();
+            tokens.add(Pair.of(token, tokenNumber));
+            copyOfCash-=tokenNumber*token.getPrice();
+        }
     }
 
-    private void initialisationTokensInTable(){
-        tokensInTable = new ArrayList<>();
-        for (Token token: Token.values())
-            tokensInTable.add(Pair.of(token,0));
+    public int getTotal(){
+        return hand.getTotal();
     }
 
     public List<Pair<Token,Integer>> getTokens(){
@@ -47,6 +51,13 @@ public class Player {
         hand.addCard(card);
     }
 
+    public String getName(){
+        return secondName+" "+firstName;
+    }
+
+    public String showCards(){
+        return hand.toString()+" ";
+    }
 
     @Override
     public String toString() {

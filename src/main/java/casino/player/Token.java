@@ -1,3 +1,5 @@
+package casino.player;
+
 import java.util.List;
 
 public enum Token {

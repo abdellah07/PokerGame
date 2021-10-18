@@ -1,4 +1,5 @@
-import Exceptions.NotAllowedValueException;
+package casino.cards;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 public class Card implements Comparable<Card>{
@@ -19,7 +20,7 @@ public class Card implements Comparable<Card>{
         return Pair.of(cardType,value);
     }
 
-    private int intValue(){
+    public int intValue(){
         return AllowedValues.getIntValue(value);
     }
 

@@ -1,4 +1,4 @@
-package Exceptions;
+package casino.Exceptions;
 
 public class NotAllowedValueException extends Exception{
     public NotAllowedValueException(){

@@ -1,3 +1,5 @@
+package casino.cards;
+
 /**
  * this enum represent all the card types
  * @author Abdellah NAJI

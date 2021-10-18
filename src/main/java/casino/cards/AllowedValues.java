@@ -1,4 +1,6 @@
-import Exceptions.NotAllowedValueException;
+package casino.cards;
+
+import casino.Exceptions.NotAllowedValueException;
 
 import java.util.Arrays;
 
@@ -11,7 +13,7 @@ public class AllowedValues {
     /**
      * possible values
      */
-    private static final String[] allowedValues = {"A","2","3","4","5","6","7","8","9","10","V","D","R","A"};
+    protected static final String[] allowedValues = {"A","2","3","4","5","6","7","8","9","10","V","D","R","A"};
 
     /**
      * get the string value that can be given to a card
@@ -30,7 +32,7 @@ public class AllowedValues {
     public static int getIntValue(String value) {
         for(int i = 1;i<=14;i++){
             if(allowedValues[i].equals(value))
-                return i;
+                return i+1;
         }
         return 0;
     }

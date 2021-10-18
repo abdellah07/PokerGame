@@ -1,13 +1,16 @@
-import java.util.List;
+package casino;
+
+import casino.player.Croupier;
+import casino.player.Player;
 
 public class Game {
     private Croupier croupier;
     private Player[] players;
 
-    Game(Player ... players){
+    public Game(Player ... players){
         croupier = new Croupier();
         this.players = players;
-
+        giveTwoCardsToEach();
     }
 
     private void giveTwoCardsToEach(){

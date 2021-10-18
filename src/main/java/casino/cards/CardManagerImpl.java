@@ -1,4 +1,4 @@
-
+package casino.cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,12 +12,14 @@ public class CardManagerImpl implements CardManager {
         generateDeck();
     }
 
-    private void generateDeck(){
-        for (CardType type:CardType.values())
-            for(int i = AllowedValues.getMinValueAllowed(); i<=AllowedValues.getMaxValueAllowed(); i++) {
+    protected void generateDeck(){
+        for (CardType type: CardType.values())
+            for(int i = AllowedValues.getMinValueAllowed(); i<= AllowedValues.getMaxValueAllowed(); i++)
                 deck.add(new Card(type, AllowedValues.getValue(i)));
-            }
+
     }
+
+
 
     @Override
     public int numberOfCardsLeft(){
@@ -32,7 +34,7 @@ public class CardManagerImpl implements CardManager {
     @Override
     public Card getCard(){
         shuffleDeck();
-        return !deck.isEmpty()?deck.get(0):null;
+        return !deck.isEmpty()?deck.remove(0):null;
     }
 
     @Override

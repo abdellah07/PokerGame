@@ -1,4 +1,4 @@
-package Exceptions;
+package casino.Exceptions;
 
 public class EmptyDeckException extends Exception{
     EmptyDeckException(){
