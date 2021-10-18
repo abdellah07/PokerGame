@@ -4,6 +4,8 @@ import casino.cards.CardManager;
 import casino.cards.CardManagerImpl;
 import casino.player.Player;
 
+import static casino.util.ConsoleColor.*;
+
 public class Croupier {
     protected CardManager cardManager;
 

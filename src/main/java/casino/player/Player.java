@@ -47,8 +47,9 @@ public class Player {
         return copyOfTokens;
     }
 
-    public void addCardToHand(Card card){
+    public Card addCardToHand(Card card){
         hand.addCard(card);
+        return card;
     }
 
     public String getName(){
@@ -57,6 +58,10 @@ public class Player {
 
     public String showCards(){
         return hand.toString()+" ";
+    }
+
+    public boolean checkAs(){
+        return hand.verifiesAs();
     }
 
     @Override

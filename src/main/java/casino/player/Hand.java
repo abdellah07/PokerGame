@@ -5,6 +5,7 @@ import casino.cards.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Hand {
     private List<Card> cards;
@@ -25,11 +26,21 @@ public class Hand {
     }
 
 
+    public boolean verifiesAs(){
+        if(total>21)
+            if(!cards.stream().filter(card -> card.getValue().getValue().equals("A")).collect(Collectors.toList()).isEmpty()) {
+                total -= 10;
+                return true;
+            }
+        return false;
+    }
 
     public void addCard(Card card){
         cards.add(card);
         if(card.intValue() == 14 && total+card.intValue()>21)
             total++;
+        else if(card.intValue() == 14)
+            total+=11;
         else if(card.intValue()>=10)
             total+=10;
         else
