@@ -5,20 +5,23 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import static casino.util.ConsoleColor.*;
 
 public class Player {
 
-    private String firstName;
+    protected String firstName;
 
-    private String secondName;
+    protected String secondName;
 
-    private String email;
+    protected String email;
 
-    private Hand hand;
+    protected Hand hand;
 
-    private int cash;
+    protected int cash;
 
-    private List<Pair<Token,Integer>> tokens;
+    protected List<Pair<Token,Integer>> tokens;
 
     public Player(String firstName, String secondName, String email) {
         this.firstName = firstName;
@@ -28,7 +31,10 @@ public class Player {
         initialisationTokens();
     }
 
-    private void initialisationTokens(){
+    public void initialization(){
+        this.hand = new Hand();
+    }
+    protected void initialisationTokens(){
         tokens = new ArrayList<>();
         int copyOfCash = cash;
         for (Token token: Token.values()) {
@@ -67,5 +73,15 @@ public class Player {
     @Override
     public String toString() {
         return firstName+" "+secondName+" have "+hand.getCards().size();
+    }
+
+    public boolean play(){
+        System.out.print(GREEN+"## Player ".toUpperCase()+BLUE+getName()+GREEN+" Do you want to pull a card. (y/n)".toUpperCase()+RESET+"\t:");
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.next();
+        if(s.toUpperCase().equals("Y"))
+            return true;
+        else
+            return false;
     }
 }

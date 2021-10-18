@@ -6,6 +6,7 @@ import casino.player.Hand;
 import casino.player.Player;
 
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 import static casino.util.ConsoleColor.*;
@@ -23,7 +24,7 @@ public class CroupierBlackJack extends Croupier {
     public void giveCardTo(Player player) {
         Card card = cardManager.getCard();
         player.addCardToHand(card);
-        System.out.println(GREEN+"## Player ".toUpperCase()+BLUE+player.getName()+GREEN+" picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+player.getTotal()+RESET+"\n");
+        System.out.println(GREEN+"## Player ".toUpperCase()+BLUE+player.getName()+GREEN+" picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+player.getTotal()+RESET);
     }
 
     protected void takeCards(){
@@ -35,7 +36,7 @@ public class CroupierBlackJack extends Croupier {
     private void pickCard(){
         Card card = cardManager.getCard();
         hand.addCard(card);
-        System.out.println(GREEN+"## ".toUpperCase()+BLUE+"Dealer "+GREEN+"picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+getTotalValue()+RESET+"\n");
+        System.out.println(GREEN+"## ".toUpperCase()+BLUE+"Dealer "+GREEN+"picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+getTotalValue()+RESET);
 
     }
 
@@ -44,9 +45,9 @@ public class CroupierBlackJack extends Croupier {
     }
 
     protected void play(List<Player> players){
-            OptionalInt max = players.stream().filter(player -> player.getTotal() < 21).mapToInt(Player::getTotal).max();
+            OptionalDouble max = players.stream().filter(player -> player.getTotal() < 21).mapToInt(Player::getTotal).average();
             if(max.isPresent()){
-                while(getTotalValue()<17 && getTotalValue()<max.getAsInt()){
+                while(getTotalValue()<17 && getTotalValue()<max.getAsDouble()){
                     pickCard();
                 }
             }
@@ -57,6 +58,6 @@ public class CroupierBlackJack extends Croupier {
     }
 
     protected String getStats(){
-        return hand.toString()+". Total Value "+getTotalValue();
+        return hand.toString()+GREEN+". Total Value "+BLUE+getTotalValue()+RESET;
     }
 }
