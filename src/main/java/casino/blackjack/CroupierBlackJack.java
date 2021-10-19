@@ -24,7 +24,8 @@ public class CroupierBlackJack extends Croupier {
     public void giveCardTo(Player player) {
         Card card = cardManager.getCard();
         player.addCardToHand(card);
-        System.out.println(GREEN+"## Player ".toUpperCase()+BLUE+player.getName()+GREEN+" picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+player.getTotal()+RESET);
+        if(IoBlackJack.getShow())
+            System.out.println(GREEN+"## Player ".toUpperCase()+BLUE+player.getName()+GREEN+" picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+player.getTotal()+RESET);
     }
 
     protected void takeCards(){
@@ -36,12 +37,13 @@ public class CroupierBlackJack extends Croupier {
     private void pickCard(){
         Card card = cardManager.getCard();
         hand.addCard(card);
-        System.out.println(GREEN+"## ".toUpperCase()+BLUE+"Dealer "+GREEN+"picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+getTotalValue()+RESET);
+        if(IoBlackJack.getShow())
+            System.out.println(GREEN+"## ".toUpperCase()+BLUE+"Dealer "+GREEN+"picked ".toUpperCase()+BLUE+ card + GREEN+". Total Value is ".toUpperCase()+BLUE+getTotalValue()+RESET);
 
     }
 
     private void showOneCard(){
-        System.out.println(GREEN+"## The dealer have ".toUpperCase()+BLUE+hand.getCards().get(0)+GREEN+" and a hidden card.".toUpperCase()+RESET);
+        IoBlackJack.showOneCard(hand);
     }
 
     protected void play(List<Player> players){

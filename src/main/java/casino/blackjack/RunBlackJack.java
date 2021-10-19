@@ -22,16 +22,14 @@ public class RunBlackJack {
     RunBlackJack(){
         players = new ArrayList<>();
         croupier = new CroupierBlackJack();
-        System.out.println(CYAN+"##### Welcome To The New Casino ##### \n".toUpperCase()+RESET);
-        System.out.println(CYAN+"  ########### Black Jack ##########   \n".toUpperCase()+RESET);
-
+        IoBlackJack.startMenu();
         winners = new ArrayList<>();
         losers = new ArrayList<>();
         equality = new ArrayList<>();
     }
 
     private void addPlayer(Player player){
-        System.out.println(GREEN+"## "+BLUE+player.getName()+" Joined the Game".toUpperCase()+RESET);
+        IoBlackJack.playerJoined(player);
         players.add(player);
     }
 
@@ -43,20 +41,17 @@ public class RunBlackJack {
         for (Player player: players) {
             player.initialization();
             croupier.giveCardTo(player,2);
-            showPlayerStats(player);
+            IoBlackJack.showStats(player);
         }
     }
 
     public void initGame(){
-        System.out.println("###############################################################################################");
+        IoBlackJack.separator();
         initPlayers();
         initCroupier();
-        System.out.println("###############################################################################################");
+        IoBlackJack.separator();
     }
 
-    private void showPlayerStats(Player player){
-        System.out.println(GREEN+"## Player ".toUpperCase()+BLUE+player.getName()+GREEN+" have ".toUpperCase()+BLUE+player.showCards() + GREEN+". Total Value is ".toUpperCase()+BLUE+player.getTotal()+RESET);
-    }
 
     public List<Player> start(){
         playersPlay();
@@ -70,55 +65,42 @@ public class RunBlackJack {
     List<Player> analyseParty(List<Player> playersStilIn){
         if(playersStilIn.isEmpty()) {
             if (winners.isEmpty())
-                System.out.println(GREEN + "## " + RED + " \t everyone lost".toUpperCase() + RESET);
+                IoBlackJack.everyOneLost();
         }else {
             if(croupier.getTotalValue()<=21){
-                System.out.println(GREEN +"##"+BLUE+ "Dealer "+croupier.getStats());
+                IoBlackJack.showStats(croupier);
                 winners.addAll(playersStilIn.stream().filter(player -> player.getTotal()>croupier.getTotalValue()).collect(Collectors.toList()));
                 equality.addAll(playersStilIn.stream().filter(player -> player.getTotal()==croupier.getTotalValue()).collect(Collectors.toList()));
                 losers.addAll(playersStilIn.stream().filter(player -> player.getTotal()<croupier.getTotalValue()).collect(Collectors.toList()));
             }else{
-                System.out.println(GREEN + "## " + RED + " \t Dealer lost".toUpperCase() + RESET);
+                IoBlackJack.dealerLost();
                 winners.addAll(playersStilIn);
             }
         }
 
+        IoBlackJack.showWinners(winners);
+        IoBlackJack.showEquals(equality);
+        IoBlackJack.showLosers(losers);
 
-
-        if(!winners.isEmpty()) {
-            System.out.println("\n" + GREEN + "## " + PURPLE + " \t Winners".toUpperCase()+GREEN+" are :".toUpperCase() + RESET);
-            for (Player winner : winners)
-                System.out.println(GREEN + "## \t" + PURPLE + "\t\t\t" + winner.getName() + RESET);
-        }
-
-        if(!equality.isEmpty()) {
-            System.out.println("\n" + GREEN + "## " + PURPLE + " \t Equality :".toUpperCase()+GREEN+" are :".toUpperCase() + RESET);
-            for (Player equal : equality)
-                System.out.println(GREEN + "## \t" + BLUE + "\t\t\t" + equal.getName() + RESET);
-        }
-
-        if(!losers.isEmpty()) {
-            System.out.println("\n" + GREEN + "## " + PURPLE + " \t Losers :".toUpperCase()+GREEN+" are :".toUpperCase() + RESET);
-            for (Player loser : losers)
-                System.out.println(GREEN + "## \t" + RED + "\t\t\t" + loser.getName() + RESET);
-        }
         return winners;
     }
 
     private void playersPlay(){
         for (Player player: players) {
-            System.out.println(YELLOW+"############################# MOVE TO PLAYER "+player.getName()+" ############################# \n"+RESET);
+            IoBlackJack.moveToNextPlayer(player);
             boolean end = false;
             while (!end) {
-                showPlayerStats(player);
+                IoBlackJack.showStats(player);
                 if(player.play()) {
                     croupier.giveCardTo(player);
-                    System.out.println();
+                    if(IoBlackJack.getShow())
+                        System.out.println();
                     if (checkPlayerStats(player))
                         end = true;
                 }else {
                     end = true;
-                    System.out.println();
+                    if(IoBlackJack.getShow())
+                        System.out.println();
                 }
             }
         }
@@ -127,12 +109,12 @@ public class RunBlackJack {
 
     private boolean checkPlayerStats(Player player){
         if(player.getTotal() == 21) {
-            System.out.println(GREEN + "## " + PURPLE + " $$ BINGO BLACK JACK $$ ".toUpperCase() + BLUE + player.getName() + PURPLE + " WON ".toUpperCase() + RESET+"\n");
+            IoBlackJack.blackJack(player);
             winners.add(player);
             return true;
         }
         else if(player.getTotal() > 21 && !player.checkAs()) {
-            System.out.println(GREEN + "## " + RED + " YOU LOST " + RESET+"\n");
+            IoBlackJack.loseMessage();
             return true;
         }
         return false;
@@ -141,41 +123,47 @@ public class RunBlackJack {
 
 
     public static void main(String[] args) {
-        boolean bot = true;
-
+        boolean bot = false;
+        int NBBOUCLE = 100000;
+        StatsCollector s = null;
+        IoBlackJack.setShow(true);
         if(!bot) {
             RunBlackJack blackJack = new RunBlackJack();
             blackJack.addPlayer(new Player("NAJI", "Abdellah", "abdellah@mail.com"));
             blackJack.addPlayer(new Player("KHERRAF", "Taha", "Taha@mail.com"));
-            blackJack.addPlayer(new Player("JADAR", "Mohammed", "Mohammed@mail.com"));
-            System.out.println();
+            //blackJack.addPlayer(new Player("JADAR", "Mohammed", "Mohammed@mail.com"));
+            if(IoBlackJack.getShow())
+                System.out.println();
             blackJack.initGame();
-            System.out.println();
+            if(IoBlackJack.getShow())
+                System.out.println();
             blackJack.start();
         }else {
-            int NBBOUCLE = 100000;
-            Player ps[] = {new Bot("NAJI", "Abdellah", "abdellah@mail.com")
-                    ,new Bot("KHERRAF", "Taha", "Taha@mail.com")
-                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")
-                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")
-                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")
-                    ,new Bot("JADAR", "Mohammed", "Mohammed@mail.com")};
-            StatsCollector s = new StatsCollector(Arrays.asList(ps));
-            for (int i = 0; i < NBBOUCLE; i++) {
-                RunBlackJack blackJack = new RunBlackJack();
-                for (Player p:ps) {
-                    blackJack.addPlayer(p);
+            for (int nbCard = 4; nbCard<21;nbCard++) {
+                System.out.println("strategie "+nbCard+"\n");
+                Player ps[] = {new Bot("NAJI", "Abdellah", "abdellah@mail.com",nbCard)
+                        , new Bot("KHERRAF", "Taha", "Taha@mail.com",nbCard)
+                        , new Bot("JADAR", "Mohammed", "Mohammed@mail.com",nbCard)
+                        , new Bot("JADAR", "Mohammed", "Mohammed@mail.com",nbCard)
+                        , new Bot("JADAR", "Mohammed", "Mohammed@mail.com",nbCard)
+                        , new Bot("JADAR", "Mohammed", "Mohammed@mail.com",nbCard)};
+                s = new StatsCollector(Arrays.asList(ps));
+
+                for (int i = 0; i < NBBOUCLE; i++) {
+                    RunBlackJack blackJack = new RunBlackJack();
+                    for (Player p : ps) {
+                        blackJack.addPlayer(p);
+                    }
+                    if (IoBlackJack.getShow())
+                        System.out.println();
+                    blackJack.initGame();
+                    if (IoBlackJack.getShow())
+                        System.out.println();
+                    s.collect(blackJack.start());
                 }
+                s.Percentage(NBBOUCLE);
                 System.out.println();
-                blackJack.initGame();
-                System.out.println();
-                s.collect(blackJack.start());
             }
-
-            s.Percentage(NBBOUCLE);
-
         }
-
-
     }
 }
